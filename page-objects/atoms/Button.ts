@@ -1,20 +1,19 @@
-import {expect, Locator, Page} from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 
 export class Button {
-    readonly page: Page;
-    readonly buttonLocator: Locator;
+  readonly page: Page;
+  readonly buttonLocator: Locator;
 
-    constructor(page: Page, selector: string) {
-        this.page = page;
-        this.buttonLocator = page.locator(selector);
+  constructor(page: Page, selector: string) {
+    this.page = page;
+    this.buttonLocator = page.locator(selector);
+  }
 
-    }
+  async checkVisible(): Promise<void> {
+    await expect(this.buttonLocator).toBeVisible();
+  }
 
-    async checkVisible(): Promise<void> {
-        await expect(this.buttonLocator).toBeVisible()
-    }
-
-    async click(): Promise<void> {
-        await this.buttonLocator.click();
-    }
+  async click(): Promise<void> {
+    await this.buttonLocator.click();
+  }
 }
