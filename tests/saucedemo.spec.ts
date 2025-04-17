@@ -4,31 +4,37 @@ import { InventoryPage } from "../page-objects/pages/InventoryPage";
 import { CartPage } from "../page-objects/pages/CartPage";
 
 test.describe("Saucedemo app tests", async () => {
-  test("BG1-1 check login with empty credentials fields", async ({page}) => {
+  test("BG1-1 check login with empty credentials fields", async ({ page }) => {
     const swagLabsLoginPage = new SwagLabsLoginPage(page);
     await swagLabsLoginPage.open();
     await swagLabsLoginPage.loginButton.click();
     await swagLabsLoginPage.errorMessage.isVisible();
-    await expect(swagLabsLoginPage.errorMessage).toHaveText("Epic sadface: Username is required");
+    await expect(swagLabsLoginPage.errorMessage).toHaveText(
+      "Epic sadface: Username is required",
+    );
     await swagLabsLoginPage.loginButton.checkVisible();
     await swagLabsLoginPage.errorMessageCloseButton.click();
     await swagLabsLoginPage.errorMessage.isHidden();
   });
 
-  test("BG1-2 check login with incorrect credentials", async ({page}) => {
+  test("BG1-2 check login with incorrect credentials", async ({ page }) => {
     const swagLabsLoginPage = new SwagLabsLoginPage(page);
     await swagLabsLoginPage.open();
     await swagLabsLoginPage.usernameInput.fill("test");
     await swagLabsLoginPage.passwordInput.fill("secret_sauce");
     await swagLabsLoginPage.loginButton.click();
     await swagLabsLoginPage.errorMessage.isVisible();
-    await expect(swagLabsLoginPage.errorMessage).toHaveText("Epic sadface: Username and password do not match any user in this service");
+    await expect(swagLabsLoginPage.errorMessage).toHaveText(
+      "Epic sadface: Username and password do not match any user in this service",
+    );
     await swagLabsLoginPage.loginButton.checkVisible();
     await swagLabsLoginPage.errorMessageCloseButton.click();
     await swagLabsLoginPage.errorMessage.isHidden();
   });
 
-  test("BG1-3 check login with correct credentials with base functionality", async ({page}) => {
+  test("BG1-3 check login with correct credentials with base functionality", async ({
+    page,
+  }) => {
     const swagLabsLoginPage = new SwagLabsLoginPage(page);
     const inventoryPage = new InventoryPage(page);
     await swagLabsLoginPage.open();
@@ -69,7 +75,7 @@ test.describe("Saucedemo app tests", async () => {
     await cartPage.checkFooterAttached();
   });
 
-  test("BG1-5 check sorting by Name A to Z) functionality", async ({ page }) => {
+  test("BG1-5 check sorting functionality", async ({ page }) => {
     const swagLabsLoginPage = new SwagLabsLoginPage(page);
     const inventoryPage = new InventoryPage(page);
     await swagLabsLoginPage.open();
@@ -78,42 +84,12 @@ test.describe("Saucedemo app tests", async () => {
     await swagLabsLoginPage.loginButton.click();
     await inventoryPage.open();
     await inventoryPage.checkSortByNameAZFunctionality();
-  });
-
-  test("BG1-6 check sorting by Name (Z to A) functionality", async ({ page }) => {
-    const swagLabsLoginPage = new SwagLabsLoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-    await swagLabsLoginPage.open();
-    await swagLabsLoginPage.usernameInput.fill("standard_user");
-    await swagLabsLoginPage.passwordInput.fill("secret_sauce");
-    await swagLabsLoginPage.loginButton.click();
-    await inventoryPage.open();
     await inventoryPage.checkSortByNameZAFunctionality();
-  });
-
-  test("BG1-7 check sorting by Price (low to high) functionality", async ({ page }) => {
-    const swagLabsLoginPage = new SwagLabsLoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-    await swagLabsLoginPage.open();
-    await swagLabsLoginPage.usernameInput.fill("standard_user");
-    await swagLabsLoginPage.passwordInput.fill("secret_sauce");
-    await swagLabsLoginPage.loginButton.click();
-    await inventoryPage.open();
     await inventoryPage.checkSortByPriceLowToHighFunctionality();
+    await inventoryPage.checkSortByPriceHighToLowFunctionality();
   });
 
-  test("BG1-8 check sorting by Price (high to low) functionality", async ({ page }) => {
-    const swagLabsLoginPage = new SwagLabsLoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-    await swagLabsLoginPage.open();
-    await swagLabsLoginPage.usernameInput.fill("standard_user");
-    await swagLabsLoginPage.passwordInput.fill("secret_sauce");
-    await swagLabsLoginPage.loginButton.click();
-    await inventoryPage.open();
-    await inventoryPage.checkSortByPriceHighToLowFunctionality();;
-  });
-
-  test("BG1-9 check logout functionality", async ({ page }) => {
+  test("BG1-6 check logout functionality", async ({ page }) => {
     const swagLabsLoginPage = new SwagLabsLoginPage(page);
     const inventoryPage = new InventoryPage(page);
     await swagLabsLoginPage.open();
@@ -123,18 +99,34 @@ test.describe("Saucedemo app tests", async () => {
     await inventoryPage.open();
     await inventoryPage.burgerButton.click();
     await inventoryPage.logoutButton.click();
-    return swagLabsLoginPage.open();
+    await swagLabsLoginPage.usernameInput.checkVisible();
   });
 
-  test("BG1-10 check e2e test. Buy some item", async ({ page }) => {
+  test("BG1-7 check e2e test. Buy some item", async ({ page }) => {
     const swagLabsLoginPage = new SwagLabsLoginPage(page);
     const inventoryPage = new InventoryPage(page);
+    const cartPage = new CartPage(page);
     await swagLabsLoginPage.open();
     await swagLabsLoginPage.usernameInput.fill("standard_user");
     await swagLabsLoginPage.passwordInput.fill("secret_sauce");
     await swagLabsLoginPage.loginButton.click();
     await inventoryPage.open();
+    await inventoryPage.inventoryItem0Name.isVisible();
     await inventoryPage.inventoryItem0Name.click();
-
+    await cartPage.addToCartButton.click();
+    await cartPage.addToCartButton.checkNotVisible();
+    await cartPage.removeButton.isVisible();
+    await cartPage.shoppingCartBadge.isVisible();
+    await expect(cartPage.shoppingCartBadge).toHaveCount(1);
+    await cartPage.removeButton.click();
+    await cartPage.removeButton.isHidden();
+    await cartPage.addToCartButton.checkVisible();
+    await cartPage.shoppingCartBadge.isHidden();
+    await cartPage.backToProductsButton.click();
+    await inventoryPage.title.isVisible();
+    await expect(inventoryPage.title).toContainText("Products");
+    await inventoryPage.burgerButton.click();
+    await inventoryPage.logoutButton.click();
+    await swagLabsLoginPage.usernameInput.checkVisible();
   });
 });

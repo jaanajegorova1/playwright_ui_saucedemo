@@ -13,6 +13,10 @@ export class Button {
     await expect(this.buttonLocator).toBeVisible();
   }
 
+  async checkNotVisible(): Promise<void> {
+    await expect(this.buttonLocator).toBeHidden();
+  }
+
   async click(): Promise<void> {
     await this.buttonLocator.click();
   }
