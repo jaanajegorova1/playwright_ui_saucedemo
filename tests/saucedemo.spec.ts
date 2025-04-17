@@ -125,4 +125,16 @@ test.describe("Saucedemo app tests", async () => {
     await inventoryPage.logoutButton.click();
     return swagLabsLoginPage.open();
   });
+
+  test("BG1-10 check e2e test. Buy some item", async ({ page }) => {
+    const swagLabsLoginPage = new SwagLabsLoginPage(page);
+    const inventoryPage = new InventoryPage(page);
+    await swagLabsLoginPage.open();
+    await swagLabsLoginPage.usernameInput.fill("standard_user");
+    await swagLabsLoginPage.passwordInput.fill("secret_sauce");
+    await swagLabsLoginPage.loginButton.click();
+    await inventoryPage.open();
+    await inventoryPage.inventoryItem0Name.click();
+
+  });
 });

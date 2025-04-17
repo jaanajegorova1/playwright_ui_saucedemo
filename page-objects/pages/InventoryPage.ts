@@ -12,6 +12,7 @@ export class InventoryPage {
   readonly inventoryItem4Name: Locator;
   readonly inventoryItem3Name: Locator;
   readonly inventoryItem2Name: Locator;
+  readonly inventoryItem0Name: Locator;
   readonly inventoryItem4Image: Locator;
   readonly inventoryItem4Description: Locator;
   readonly inventoryItem5Price: Locator;
@@ -37,6 +38,7 @@ export class InventoryPage {
     this.inventoryItem4Name = this.page.locator("#item_4_title_link").filter({ hasText: "Sauce Labs Backpack"});
     this.inventoryItem3Name = this.page.locator("#item_3_title_link").filter({ hasText: "Test.allTheThings() T-Shirt (Red)"});
     this.inventoryItem2Name = this.page.locator("#item_3_title_link").filter({ hasText: "Sauce Labs Onesie"});
+    this.inventoryItem0Name = this.page.locator("#item_0_title_link").filter({hasText: "Sauce Labs Bike Light"});
     this.inventoryItem4Image = this.page.locator("#item_4_img_link");
     this.inventoryItem4Description = this.page.locator(".inventory_item_desc").filter({hasText:"carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style with unequaled laptop and tablet protection."});
     this.inventoryItem5Price = this.page.locator(".inventory_item_price").filter({ hasText: "49.99" });
