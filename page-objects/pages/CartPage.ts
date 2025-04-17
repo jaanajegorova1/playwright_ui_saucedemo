@@ -15,6 +15,10 @@ export class CartPage {
   readonly socialTwitter: Locator;
   readonly socialFacebook: Locator;
   readonly socialLinkedin: Locator;
+  readonly addToCartButton: Button;
+  readonly removeButton: Locator;
+  readonly shoppingCartBadge: Locator;
+  readonly backToProductsButton: Button;
 
   constructor(page: Page) {
     this.page = page;
@@ -28,6 +32,12 @@ export class CartPage {
     this.socialTwitter = this.page.locator(".social_twitter");
     this.socialFacebook = this.page.locator(".social_facebook");
     this.socialLinkedin = this.page.locator(".social_linkedin");
+    this.addToCartButton = new Button(page, "#add-to-cart");
+    this.removeButton = this.page
+      .locator("#remove")
+      .filter({ hasText: "Remove" });
+    this.shoppingCartBadge = this.page.locator(".shopping_cart_badge");
+    this.backToProductsButton = new Button(page, "#back-to-products");
   }
 
   async open(): Promise<void> {
