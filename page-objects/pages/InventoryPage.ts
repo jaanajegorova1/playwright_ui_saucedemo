@@ -92,6 +92,13 @@ export class InventoryPage {
     await this.page.goto(url);
   }
 
+  async checkInventoryPage(): Promise<void> {
+    await this.appLogo.isVisible();
+    await expect(this.appLogo).toHaveText("Swag Labs");
+    await this.burgerButton.checkVisible();
+    await this.shoppingCartButton.checkVisible();
+  }
+
   async checkOneInventoryItemVisibility(): Promise<void> {
     await this.inventoryItem4Name.isVisible();
     await this.inventoryItem4Image.isVisible();
@@ -166,5 +173,15 @@ export class InventoryPage {
 
     await this.inventoryItem5Name.isVisible();
     await this.inventoryItem5Price.isVisible();
+  }
+
+  async checkInventoryPageTitle(): Promise<void> {
+    await this.title.isVisible();
+    await expect(this.title).toContainText("Products");
+  }
+
+  async logout(): Promise<void> {
+    await this.burgerButton.click();
+    await this.logoutButton.click();
   }
 }
