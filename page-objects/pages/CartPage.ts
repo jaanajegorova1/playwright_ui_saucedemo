@@ -50,4 +50,28 @@ export class CartPage {
     await this.socialFacebook.isVisible();
     await this.socialLinkedin.isVisible();
   }
+
+  async checkCardPage(): Promise<void> {
+    await this.appLogo.isVisible();
+    await expect(this.title).toHaveText("Your Cart");
+    await this.cartQuantityLabel.isVisible();
+    await this.cartDescriptionLabel.isVisible();
+    await this.checkoutButton.checkVisible();
+    await this.continueShoppingButton.checkVisible();
+  }
+
+  async checkAddToCartFunctionality(): Promise<void> {
+    await this.addToCartButton.click();
+    await this.addToCartButton.checkNotVisible();
+    await this.removeButton.isVisible();
+    await this.shoppingCartBadge.isVisible();
+    await expect(this.shoppingCartBadge).toHaveCount(1);
+  }
+
+  async checkRemoveFromCartFunctionality(): Promise<void> {
+    await this.removeButton.click();
+    await this.removeButton.isHidden();
+    await this.addToCartButton.checkVisible();
+    await this.shoppingCartBadge.isHidden();
+  }
 }

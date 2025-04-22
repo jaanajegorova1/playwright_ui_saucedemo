@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import { Button } from "../atoms/Button";
 import { Input } from "../atoms/Input";
 
@@ -25,5 +25,38 @@ export class SwagLabsLoginPage {
 
   async open(): Promise<void> {
     await this.page.goto(url);
+  }
+
+  async checkLoginPage(): Promise<void> {
+    await this.loginLogo.isVisible();
+    await expect(this.loginLogo).toHaveText("Swag Labs");
+    await this.usernameInput.checkVisible();
+    await this.passwordInput.checkVisible();
+    await this.loginButton.checkVisible();
+  }
+  async login(): Promise<void> {
+    await this.usernameInput.fill("standard_user");
+    await this.passwordInput.fill("secret_sauce");
+    await this.loginButton.click();
+  }
+
+  async notCorrectUsernameLogin(): Promise<void> {
+    await this.usernameInput.fill("test");
+    await this.passwordInput.fill("secret_sauce");
+    await this.loginButton.click();
+  }
+
+  async incorrectCredentialsErrorCheck(): Promise<void> {
+    await this.errorMessage.isVisible();
+    await expect(this.errorMessage).toHaveText(
+      "Epic sadface: Username and password do not match any user in this service",
+    );
+  }
+
+  async emptyCredentialsErrorCheck(): Promise<void> {
+    await this.errorMessage.isVisible();
+    await expect(this.errorMessage).toHaveText(
+      "Epic sadface: Username is required",
+    );
   }
 }
